@@ -1,0 +1,153 @@
+<%- include('partials/header') %>
+<li class="nav-item">
+  <a class="nav-link" href="/logout">logout</a>
+</li>
+</ul>
+</div>
+</nav>
+<link rel="stylesheet" href="/css/home.css">
+
+<div class="container mt-5">
+  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item">
+      <a class="btn btn-outline-dark active" id="pills-play-tab" data-toggle="pill" href="#pills-play" role="tab" aria-controls="pills-play" aria-selected="true" style="color:#ffd369">Play Quiz</a>
+    </li>
+    <li class="nav-item">
+      <a class="btn btn-outline-dark" id="pills-board-tab" data-toggle="pill" href="#pills-board" role="tab" aria-controls="pills-board" aria-selected="false" style="color:#ffd369">Leader board</a>
+    </li>
+    <li class="nav-item">
+      <a class="btn btn-outline-dark" id="pills-chat-tab" data-toggle="pill" href="#pills-chat" role="tab" aria-controls="pills-chat" aria-selected="false" style="color:#ffd369">Global chat</a>
+    </li>
+  </ul>
+</div>
+
+
+<div class="container">
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-play" role="tabpanel" aria-labelledby="pills-play-tab">
+      <p class="display-4">Quiz</p>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <img src="<%=user.photo%>" height="80" width="80" style="border-radius: 100%;">
+          </div>
+          <div class="col">
+            <div class="row">
+              <a id="username" class="h5"><%=user.name%></a>
+            </div>
+            <div class="row">
+              <a class="h5">Your score: <%=user.score%> </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="containe mt-5">
+      <form action="/home" method="post">
+        <div class="row form-group">
+    <div class="col">
+      <label for="trivia_difficulty" class="h6">Select Difficulty: </label>
+        <select class="form-control form-control-lg" name="trivia_difficulty" class="form-control">
+        <option value="any">Any Difficulty</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+    </div>
+    <div class="col">
+        <label for="trivia_category" class="h6">Select Category: </label>
+          <select class="form-control form-control-lg" name="trivia_category" class="form-control">
+            <option value="any">Any Category</option>
+            <option value="9">General Knowledge</option>
+            <option value="10">Entertainment: Books</option>
+            <option value="11">Entertainment: Film</option>
+            <option value="12">Entertainment: Music</option>
+            <option value="13">Entertainment: Musicals &amp; Theatres</option>
+            <option value="14">Entertainment: Television</option>
+            <option value="15">Entertainment: Video Games</option>
+            <option value="16">Entertainment: Board Games</option>
+            <option value="17">Science &amp; Nature</option>
+            <option value="18">Science: Computers</option>
+            <option value="19">Science: Mathematics</option>
+            <option value="20">Mythology</option><option value="21">Sports</option>
+            <option value="22">Geography</option><option value="23">History</option>
+            <option value="24">Politics</option><option value="25">Art</option>
+            <option value="26">Celebrities</option><option value="27">Animals</option>
+            <option value="28">Vehicles</option><option value="29">Entertainment: Comics</option>
+            <option value="30">Science: Gadgets</option>
+            <option value="31">Entertainment: Japanese Anime &amp; Manga</option>
+            <option value="32">Entertainment: Cartoon &amp; Animations</option>
+              </select>
+            </div>
+          </div>
+            <button class="btn btn-lg btn-primary" type="submit">Play</button>
+      </form>
+    </div>
+    </div>
+    <div class="tab-pane fade" id="pills-board" role="tabpanel" aria-labelledby="pills-board-tab">
+      <p class="display-4">Leader board</p>
+      <%docs.forEach((leader)=>{%>
+        <div style="margin:10px">
+        <img src="<%=leader.photo%>" height="40" width="40" style="border-radius: 100%">
+        <span class="badge badge-light"><%=leader.name%></span>
+        <span class="badge badge-warning"><%=leader.score%></span>
+      </div>
+      <%})%>
+    </div>
+    <div class="tab-pane fade" id="pills-chat" role="tabpanel" aria-labelledby="pills-chat-tab">
+
+
+      <div class="row">
+        <div class="chat">
+
+          <div id="messages" class="chat-history">
+
+          </div>
+
+          <div class="chat-message clearfix">
+          <form id="message-form">
+              <input id="message-form-input" name="message" value="" placeholder="type message here..." autocomplete="off" required autofocus>
+              <button id="message-form-button" type="submit" name="button">send</button>
+          </form>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script id="message-template" type="text/html">
+        <div class="message-data align-right">
+          <span class="message-data-time" >{{createdAt}}</span> &nbsp; &nbsp;
+          <span class="message-data-name" >{{user}}</span>
+        </div>
+        <div class="col">
+          <div class="message other-message align-right">
+            {{message}}
+          </div>
+        </div>
+
+
+</script>
+<script id="my-message-template" type="text/html">
+        <div class="message-data">
+          <span class="message-data-name" >{{user}}</span>
+          <span class="message-data-time" >{{createdAt}}</span> &nbsp; &nbsp;
+        </div>
+        <div class="message my-message">
+          {{message}}
+        </div>
+</script>
+
+
+<script id="welcome-message-template" type="text/html">
+        <div class="message-data message-data-welcome">----{{message}}----</div>
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat.js"></script>
+<%- include('partials/footer') %>
